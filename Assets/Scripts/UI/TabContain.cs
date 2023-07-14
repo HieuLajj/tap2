@@ -13,11 +13,11 @@ public class TabContain : MonoBehaviour
     public Image imageNotifi;
     public Sprite[] spriteImage;
     public GameObject NextPanelGameObject;
-
+    public int flag = 0;
     
     public void SetUp()
     {
-        int flag = 0;
+        
         if (Controller.Instance.DiffirentGame == DiffirentEnum.EASY)
         {
             flag = 0;
@@ -45,7 +45,11 @@ public class TabContain : MonoBehaviour
         //Debug.Log((LevelManager.Instance.DataDiffical[Controller.Instance.DiffirentGame] - flag) / Controller.Instance.constantsDiffical[Controller.Instance.DiffirentGame]);
         float a = LevelManager.Instance.DataDiffical[Controller.Instance.DiffirentGame] - flag;
         float b = Controller.Instance.constantsDiffical[Controller.Instance.DiffirentGame];
-        textNextLevel.text = $"Level {LevelManager.Instance.DataDiffical[Controller.Instance.DiffirentGame]}";
+        int c = LevelManager.Instance.DataDiffical[Controller.Instance.DiffirentGame];
+        if (c==0){
+            c=1+flag;
+        }
+        textNextLevel.text = $"Level {c}";
         imageFill.fillAmount = a/b;
         if (imageFill.fillAmount >= 1)
         {
@@ -73,6 +77,13 @@ public class TabContain : MonoBehaviour
 
     public void NextLevelEventButton()
     {
-        LevelManager.Instance.LoadLevelInGame(LevelManager.Instance.DataDiffical[Controller.Instance.DiffirentGame]);
+        if(UIManager.Instance.SelectHomeUI.activeInHierarchy){
+            UIManager.Instance.SelectHomeUI.SetActive(false);
+        }
+        int c = LevelManager.Instance.DataDiffical[Controller.Instance.DiffirentGame];
+        if (c==0){
+            c=1+flag;
+        }
+        LevelManager.Instance.LoadLevelInGame(c);
     }
 }
